@@ -2,18 +2,31 @@
 
 FILENAME='.lols';
 
-case "$#" in
-    1)
+case "$1" in
+    g)
         read -s PASSWORD;
-        openssl aes-128-cbc -a -d -in ~/$FILENAME -k $PASSWORD | grep $1;
+        read KEY;
+        openssl aes-128-cbc -a -d -in ~/$FILENAME -k $PASSWORD | grep $KEY;
         ;;
-    2)
+    p)
         read -s PASSWORD;
+        read KEY;
+        read -s VALUE;
         if [ ! -f ~/$FILENAME ]; then
-            echo -e "$1\t$2" | openssl aes-128-cbc -a -out ~/$FILENAME -k $PASSWORD;
+            echo -e "$KEY\t$VALUE" | openssl aes-128-cbc -a -out ~/$FILENAME -k $PASSWORD;
         else
             PREVIOUS=`openssl aes-128-cbc -a -d -in ~/$FILENAME -k $PASSWORD`;
-            echo -e "$PREVIOUS\n$1\t$2" | openssl aes-128-cbc -a -out ~/$FILENAME -k $PASSWORD;
+            echo -e "$PREVIOUS\n$KEY\t$VALUE" | openssl aes-128-cbc -a -out ~/$FILENAME -k $PASSWORD;
         fi
+        ;;
+    d)
+        read -s PASSWORD;
+        read KEY;
+        PREVIOUS=`openssl aes-128-cbc -a -d -in ~/$FILENAME -k $PASSWORD | grep -v $KEY`;
+        echo $PREVIOUS | openssl aes-128-cbc -a -out ~/$FILENAME -k $PASSWORD;
+        ;;
+    a)
+        read -s PASSWORD;
+        openssl aes-128-cbc -a -d -in ~/$FILENAME -k $PASSWORD;
         ;;
 esac
