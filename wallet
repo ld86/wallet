@@ -1,18 +1,19 @@
 #!/bin/bash
 
-FILENAME='.psw';
-read -s PASSWORD;
+FILENAME='.lols';
 
 case "$#" in
     1)
+        read -s PASSWORD;
         openssl aes-128-cbc -a -d -in ~/$FILENAME -k $PASSWORD | grep $1;
         ;;
     2)
+        read -s PASSWORD;
         if [ ! -f ~/$FILENAME ]; then
-            echo $1:$2 | openssl aes-128-cbc -a -out ~/$FILENAME -k $PASSWORD;
+            echo -e "$1\t$2" | openssl aes-128-cbc -a -out ~/$FILENAME -k $PASSWORD;
         else
             PREVIOUS=`openssl aes-128-cbc -a -d -in ~/$FILENAME -k $PASSWORD`;
-            echo -e "$PREVIOUS\n$1:$2" | openssl aes-128-cbc -a -out ~/$FILENAME -k $PASSWORD;
+            echo -e "$PREVIOUS\n$1\t$2" | openssl aes-128-cbc -a -out ~/$FILENAME -k $PASSWORD;
         fi
         ;;
 esac
