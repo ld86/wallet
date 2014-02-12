@@ -36,4 +36,15 @@ case "$1" in
             echo You must provide hostname;
         fi
         ;;
+    s)
+        if [ "$2" != "" ]; then
+            if [ -f ~/$FILENAME ]; then
+                echo ~/$FILENAME exists, whoops.
+            else
+                scp $2:~/$FILENAME ~/$FILENAME;
+            fi
+        else
+            echo You must provide hostname;
+        fi
+        ;;
 esac
