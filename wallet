@@ -29,4 +29,11 @@ case "$1" in
         read -s PASSWORD;
         openssl aes-128-cbc -a -d -in ~/$FILENAME -k $PASSWORD;
         ;;
+    b)
+        if [ "$2" != "" ]; then
+            scp ~/$FILENAME $2:~/$FILENAME;
+        else
+            echo You must provide hostname;
+        fi
+        ;;
 esac
