@@ -47,4 +47,9 @@ case "$1" in
             echo You must provide hostname;
         fi
         ;;
+    m)
+        read MAIL
+        gpg -r $MAIL -a -e ~/$FILENAME && cat ~/${FILENAME}.asc | mail -s "~/$FILENAME" "$MAIL";
+        rm -f ~/${FILENAME}.asc;
+        ;;
 esac
